@@ -271,12 +271,12 @@ namespace Discord_Crash_MP4_Generator
             string outputDir = "";
             double crashTiming = 3;
 
-#if DEBUG 
-            filePath = @"C:\Users\Lukas\Desktop\Memes\vid\hot_irl_kitten_nya.mp4";
-            outputDir = @"C:\Users\Lukas\Desktop\Memes\vid\crashers\lol.mp4";
+#if DEBUG
+            filePath = @"C:\crasherstest\kitten.mp4";
+            outputDir = @"C:\crasherstest\very_hot_girl_goes_down_on_you.mp4";
             crashTiming = 3;
 #else
-#region Get Filepath 
+            #region Get Filepath 
             {
             readFilePathAgain:
 
@@ -286,13 +286,13 @@ namespace Discord_Crash_MP4_Generator
 
                 if (!Regex.IsMatch(filePath, filePathPattern))
                 {
-                    writeLine("'{0}' is not a valid Filepath.", filePath);
+                    writeLine(ConsoleColor.Yellow, filePath, null, "is not a valid Filepath.");
                     goto readFilePathAgain;
                 }
 
                 if(File.Exists(filePath) == false)
                 {
-                    writeLine("Could not find any File at '{0}'", filePath);
+                    writeLine("Could not find any File at '", ConsoleColor.Yellow, filePath, null,"'");
                     goto readFilePathAgain;
                 }
 
@@ -314,8 +314,8 @@ namespace Discord_Crash_MP4_Generator
 
                 if (!Regex.IsMatch(outputDir, filePathPattern))
                 {
-                    outputDir = $@"C:\Users\{Environment.UserName}\Downloads";
-                    writeLine("The entered Filepath was invalid.\n'{0}' will be used instead.", outputDir);
+                    outputDir = $@"C:\Users\{Environment.UserName}\Downloads\{Path.GetFileName(filePath)}";
+                    writeLine("The entered Filepath was invalid.\n'", ConsoleColor.Blue, outputDir, null, "' will be used instead.");
                 }
             }
 #endregion
@@ -332,7 +332,7 @@ namespace Discord_Crash_MP4_Generator
                     crashTiming = result;
                 else
                 {
-                    writeLine("{0} is an Invalid Time. It has to be Format 'double'", crashTiming);
+                    writeLine(ConsoleColor.Yellow, crashTiming, null, "is an Invalid Time. It has to be Format 'double'");
                     goto readCrashTimingAgain;
                 }
             }
