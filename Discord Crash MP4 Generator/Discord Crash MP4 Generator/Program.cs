@@ -25,7 +25,7 @@ namespace Discord_Crash_MP4_Generator
         public static string badSample = Path.GetTempPath() + Guid.NewGuid().ToString();
         public static string sampleCollection = Path.GetTempPath() + Guid.NewGuid().ToString() + ".txt";
 
-        public static int brokenSamples = 25; // defines amount of fuckyness
+        public static int brokenSamples = 5; // 3 seems to be quite alright tbh
 
         public static string filePathPattern = @"^(?:[a-zA-Z]\:|\\\\[\w\.]+\\[\w.$]+)\\(?:[\w]+\\)*\w([\w.])+$";
 
@@ -44,21 +44,31 @@ namespace Discord_Crash_MP4_Generator
                     throw new InvalidInputException("The Object " + o.GetType().ToString() + " does not have a ToString function.");
         }
 
+        private static PixelFormat last = PixelFormat.yuv420p;
         public static PixelFormat randomPixelFormat()
-        {/*
-            var formats = new List<PixelFormat>()
-            { 
-                PixelFormat.yuv410p,
-                PixelFormat.yuv411p,
-                PixelFormat.yuv420p,
-                PixelFormat.yuv422p,
-                PixelFormat.yuv440p,
-                PixelFormat.yuv444p
-            };
+        {
+            if(last == PixelFormat.yuv420p)
+            {
+                last = PixelFormat.yuv444p;
+                return PixelFormat.yuv444p;
+            }
 
-            return formats[new Random().Next(0, formats.Count)];*/
 
-            var values = (PixelFormat[])Enum.GetValues(typeof(PixelFormat));
+            last = PixelFormat.yuv420p;
+            return PixelFormat.yuv420p;
+            //  var values = (PixelFormat[])Enum.GetValues(typeof(PixelFormat));
+            //  return values[new Random().Next(0, values.Length)];
+        }
+
+        public static VideoSize randomVideoSize()
+        {
+            var values = (VideoSize[])Enum.GetValues(typeof(VideoSize));
+            return values[new Random().Next(0, values.Length)];
+        }
+
+        public static VideoCodec randomCodec()
+        {
+            var values = (VideoCodec[])Enum.GetValues(typeof(VideoCodec));
             return values[new Random().Next(0, values.Length)];
         }
 
@@ -71,8 +81,21 @@ namespace Discord_Crash_MP4_Generator
             
             Console.WriteLine();
         }
+        
+        public static async Task<string> Get10k()
+        {
+            string path = Path.GetTempPath() + "10k10k10k10k10k10k10k10k10k10k10k10k10k10k10k10k10k10k.mp4";
 
-        // this actually seems to work to some extend?
+            IConversion c = FFmpeg.Conversions.New();
+            c.SetOverwriteOutput(true);
+            c.AddParameter("-ss 999 -framerate 1 -i C:\\crasherstest\\10k.png -codec copy -pix_fmt yuv420p " + path);
+
+            await c.Start();
+
+            return path;
+        }
+
+        [Obsolete("This never did anything anyways")]
         public static async Task<IConversionResult> gifBreaker(string path)
         {
             string temp = Path.GetTempPath() + Guid.NewGuid().ToString() + ".gif";
@@ -90,15 +113,30 @@ namespace Discord_Crash_MP4_Generator
             return await c2.Start();
         }
 
-        // This doesnt seem to do shit
+        [Obsolete("didnt finish this")]
+        public static async Task<IConversionResult> tsTest(string path)
+        {
+            string temp = Path.GetTempPath() + Guid.NewGuid().ToString() + ".ts";
+
+            IConversion c = await FFmpeg.Conversions.FromSnippet.ToTs(path, temp);
+            c.SetOverwriteOutput(true);
+            await c.Start();
+
+            IConversion c2 = await FFmpeg.Conversions.FromSnippet.ToMp4(temp, path);
+            c2.SetOverwriteOutput(true);
+            return await c2.Start();
+        }
+
+        [Obsolete("does 0")]
         public static async Task<IConversionResult> webmBreaker(string path)
         {
             string temp = Path.GetTempPath() + Guid.NewGuid().ToString() + ".webm";
 
             IConversion c = await FFmpeg.Conversions.FromSnippet.ToWebM(path, temp);
             c.SetOverwriteOutput(true);
-            c.SetPixelFormat(randomPixelFormat());
-            randomizeScaleAndAspectRatio(c);
+           // c.SetPixelFormat(randomPixelFormat());
+          //  randomizeScaleAndAspectRatio(c);
+          c.AddParameter("-vf scale=10000:10000");
             await c.Start();
 
             IConversion c2 = await FFmpeg.Conversions.FromSnippet.ToMp4(temp, path);
@@ -125,12 +163,47 @@ namespace Discord_Crash_MP4_Generator
 
         public static async Task<IConversionResult> generateBrokenSample(string master, string output, TimeSpan start, TimeSpan duration)
         {
-            IConversion bad = await FFmpeg.Conversions.FromSnippet.Split(master, output, start, duration);
+            string temp = Path.GetFullPath(output) + "temp-" + Path.GetFileName(output);
+
+            if (File.Exists(temp))
+                File.Delete(temp);
+            
+            IConversion bad = await FFmpeg.Conversions.FromSnippet.Split(master, temp, start, duration);
             bad.SetOverwriteOutput(true);
             bad.SetPixelFormat(randomPixelFormat()); // this does 90% of the crash
             randomizeScaleAndAspectRatio(bad);
+            
+            await bad.Start();
+            
+            IMediaInfo meta = await FFmpeg.GetMediaInfo(temp);
 
-            return await bad.Start();
+            IVideoStream v = meta.VideoStreams.ToList().FirstOrDefault();      
+            v.SetSize(randomVideoSize());
+
+            {
+                var sub = SubtitleGenerator.New();
+
+                await sub.AddSubtitle(TimeSpan.FromSeconds(0), meta.Duration, " ̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺ͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩ 𓀐 ̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺ͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩ 𓀐 ̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺ͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩ 𓀐 ̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺ͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩ 𓀐 ̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺ͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩ 𓀐 ̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺̺ͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩͩ 𓀐\n".Repeat(100));
+
+                v.AddSubtitles(sub.Filepath);
+            }
+
+            IAudioStream a = meta.AudioStreams.ToList().FirstOrDefault();
+            a.Reverse(); // the people who survive will get confused
+            a.ChangeSpeed(0.5);
+
+            var result = await FFmpeg.Conversions.New()
+                .SetOverwriteOutput(true)
+                .AddStream(v)
+                .AddStream(a)
+                .SetOutput(output)
+                .SetPixelFormat(PixelFormat.yuv444p)
+                .SetVideoSyncMethod(VideoSyncMethod.passthrough)
+                .Start();
+
+            File.Delete(temp);
+            
+            return result;
         }
 
         public static void Cleanup()
@@ -192,7 +265,8 @@ namespace Discord_Crash_MP4_Generator
                         anotherAttempt:
                         try
                         {
-                            await generateBrokenSample(input, samplePath, position, time2workwith); 
+                            await generateBrokenSample(input, samplePath, position, time2workwith);
+                          //  await gifBreaker(samplePath);
                         }
                         catch(Exception e)
                         { // in some cases conversion will fuck up, so just try again cuz i cba to filter out which cant be converted
@@ -211,6 +285,9 @@ namespace Discord_Crash_MP4_Generator
                         position += time2workwith;
                     }
                 }
+
+                badParts.Add(await Get10k());
+
                 #endregion
 
 
@@ -241,16 +318,17 @@ namespace Discord_Crash_MP4_Generator
                 IConversion conversion = FFmpeg.Conversions.New();
 
                 conversion.SetOverwriteOutput(true);
-
-            //    conversion.AddParameter("-y -vsync 0 -hwaccel cuda -hwaccel_output_format cuda -c:v libx265");
                 conversion.AddParameter($"-f concat");
                 conversion.AddParameter($"-safe 0");
                 conversion.AddParameter($"-i \"{sampleCollection}\"");
                 conversion.AddParameter($"-codec copy");
-                
+
                 writeLine("Building output...");
 
-                return await conversion.SetOutput(output).Start();
+                writeLine("File can be found in: ", ConsoleColor.Yellow, output, null);
+
+                return await conversion.SetOutput(output)
+                    .Start();
 
                 #endregion
             }
@@ -290,8 +368,8 @@ namespace Discord_Crash_MP4_Generator
 
 #if DEBUG
             filePath = @"C:\crasherstest\kitten.mp4";
-            outputDir = @"C:\crasherstest\very_hot_girl_goes_down_on_you.mp4";
-            crashTiming = 3;
+            outputDir = @"C:\crasherstest\hot_bitch.mp4";
+            crashTiming = 2;
 #else
             #region Get Filepath 
             {
@@ -319,11 +397,11 @@ namespace Discord_Crash_MP4_Generator
                     goto readFilePathAgain;
                 }
             }
-#endregion
+            #endregion
 
             writeLine("-".Repeat(100));
 
-#region Get Output Directory
+            #region Get Output Directory
             {
                 writeLine("Enter the Output path, if you dont want to define the Output Path, your Download Folder will be used as default.");
 
@@ -335,11 +413,11 @@ namespace Discord_Crash_MP4_Generator
                     writeLine("The entered Filepath was invalid.\n'", ConsoleColor.Blue, outputDir, null, "' will be used instead.");
                 }
             }
-#endregion
+            #endregion
 
             writeLine("-".Repeat(100));
 
-#region Get Crash Timing 
+            #region Get Crash Timing 
             {
             readCrashTimingAgain:
 
@@ -353,7 +431,7 @@ namespace Discord_Crash_MP4_Generator
                     goto readCrashTimingAgain;
                 }
             }
-#endregion
+            #endregion
 
             writeLine("-".Repeat(100));
 #endif
