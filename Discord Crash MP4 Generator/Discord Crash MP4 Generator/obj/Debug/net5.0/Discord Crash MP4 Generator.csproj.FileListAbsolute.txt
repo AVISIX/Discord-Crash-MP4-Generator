@@ -1,0 +1,19 @@
+C:\Users\Lukas\Documents\GitHub\Discord-Crash-MP4-Generator\Discord Crash MP4 Generator\Discord Crash MP4 Generator\bin\Debug\net5.0\Discord Crash MP4 Generator.exe
+C:\Users\Lukas\Documents\GitHub\Discord-Crash-MP4-Generator\Discord Crash MP4 Generator\Discord Crash MP4 Generator\bin\Debug\net5.0\Discord Crash MP4 Generator.deps.json
+C:\Users\Lukas\Documents\GitHub\Discord-Crash-MP4-Generator\Discord Crash MP4 Generator\Discord Crash MP4 Generator\bin\Debug\net5.0\Discord Crash MP4 Generator.runtimeconfig.json
+C:\Users\Lukas\Documents\GitHub\Discord-Crash-MP4-Generator\Discord Crash MP4 Generator\Discord Crash MP4 Generator\bin\Debug\net5.0\Discord Crash MP4 Generator.runtimeconfig.dev.json
+C:\Users\Lukas\Documents\GitHub\Discord-Crash-MP4-Generator\Discord Crash MP4 Generator\Discord Crash MP4 Generator\bin\Debug\net5.0\Discord Crash MP4 Generator.dll
+C:\Users\Lukas\Documents\GitHub\Discord-Crash-MP4-Generator\Discord Crash MP4 Generator\Discord Crash MP4 Generator\bin\Debug\net5.0\ref\Discord Crash MP4 Generator.dll
+C:\Users\Lukas\Documents\GitHub\Discord-Crash-MP4-Generator\Discord Crash MP4 Generator\Discord Crash MP4 Generator\bin\Debug\net5.0\Discord Crash MP4 Generator.pdb
+C:\Users\Lukas\Documents\GitHub\Discord-Crash-MP4-Generator\Discord Crash MP4 Generator\Discord Crash MP4 Generator\bin\Debug\net5.0\Newtonsoft.Json.dll
+C:\Users\Lukas\Documents\GitHub\Discord-Crash-MP4-Generator\Discord Crash MP4 Generator\Discord Crash MP4 Generator\bin\Debug\net5.0\Xabe.FFmpeg.dll
+C:\Users\Lukas\Documents\GitHub\Discord-Crash-MP4-Generator\Discord Crash MP4 Generator\Discord Crash MP4 Generator\obj\Debug\net5.0\Discord Crash MP4 Generator.csprojAssemblyReference.cache
+C:\Users\Lukas\Documents\GitHub\Discord-Crash-MP4-Generator\Discord Crash MP4 Generator\Discord Crash MP4 Generator\obj\Debug\net5.0\Discord Crash MP4 Generator.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Lukas\Documents\GitHub\Discord-Crash-MP4-Generator\Discord Crash MP4 Generator\Discord Crash MP4 Generator\obj\Debug\net5.0\Discord Crash MP4 Generator.AssemblyInfoInputs.cache
+C:\Users\Lukas\Documents\GitHub\Discord-Crash-MP4-Generator\Discord Crash MP4 Generator\Discord Crash MP4 Generator\obj\Debug\net5.0\Discord Crash MP4 Generator.AssemblyInfo.cs
+C:\Users\Lukas\Documents\GitHub\Discord-Crash-MP4-Generator\Discord Crash MP4 Generator\Discord Crash MP4 Generator\obj\Debug\net5.0\Discord Crash MP4 Generator.csproj.CoreCompileInputs.cache
+C:\Users\Lukas\Documents\GitHub\Discord-Crash-MP4-Generator\Discord Crash MP4 Generator\Discord Crash MP4 Generator\obj\Debug\net5.0\Discord Crash MP4 Generator.csproj.CopyComplete
+C:\Users\Lukas\Documents\GitHub\Discord-Crash-MP4-Generator\Discord Crash MP4 Generator\Discord Crash MP4 Generator\obj\Debug\net5.0\Discord Crash MP4 Generator.dll
+C:\Users\Lukas\Documents\GitHub\Discord-Crash-MP4-Generator\Discord Crash MP4 Generator\Discord Crash MP4 Generator\obj\Debug\net5.0\ref\Discord Crash MP4 Generator.dll
+C:\Users\Lukas\Documents\GitHub\Discord-Crash-MP4-Generator\Discord Crash MP4 Generator\Discord Crash MP4 Generator\obj\Debug\net5.0\Discord Crash MP4 Generator.pdb
+C:\Users\Lukas\Documents\GitHub\Discord-Crash-MP4-Generator\Discord Crash MP4 Generator\Discord Crash MP4 Generator\obj\Debug\net5.0\Discord Crash MP4 Generator.genruntimeconfig.cache
