@@ -47,6 +47,7 @@ namespace Discord_Crash_MP4_Generator
         private static PixelFormat last = PixelFormat.yuv420p;
         public static PixelFormat randomPixelFormat()
         {
+            /*
             if(last == PixelFormat.yuv420p)
             {
                 last = PixelFormat.yuv444p;
@@ -55,9 +56,9 @@ namespace Discord_Crash_MP4_Generator
 
 
             last = PixelFormat.yuv420p;
-            return PixelFormat.yuv420p;
-            //  var values = (PixelFormat[])Enum.GetValues(typeof(PixelFormat));
-            //  return values[new Random().Next(0, values.Length)];
+            return PixelFormat.yuv420p;*/
+              var values = (PixelFormat[])Enum.GetValues(typeof(PixelFormat));
+             return values[new Random().Next(0, values.Length)];
         }
 
         public static VideoSize randomVideoSize()
