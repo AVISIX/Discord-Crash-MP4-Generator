@@ -7,16 +7,25 @@ using Xabe.FFmpeg;
 using Xabe.FFmpeg.Exceptions;
 using System.Linq;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace Discord_Crash_MP4_Generator
 {
+    #region To Do
+    /*
+        - Add shitty hardware accel so this gets more consistent
+        - figure out a better way to do this 
+        - maybe embed in a gif? 
+    */
+    #endregion
+
     class Program
     {
         public static string goodSample = Path.GetTempPath() + Guid.NewGuid().ToString() + ".mp4";
         public static string badSample = Path.GetTempPath() + Guid.NewGuid().ToString();
         public static string sampleCollection = Path.GetTempPath() + Guid.NewGuid().ToString() + ".txt";
 
-        public static int brokenSamples = 10; // defines amount of fuckyness
+        public static int brokenSamples = 25; // defines amount of fuckyness
 
         public static string filePathPattern = @"^(?:[a-zA-Z]\:|\\\\[\w\.]+\\[\w.$]+)\\(?:[\w]+\\)*\w([\w.])+$";
 
@@ -36,7 +45,19 @@ namespace Discord_Crash_MP4_Generator
         }
 
         public static PixelFormat randomPixelFormat()
-        {
+        {/*
+            var formats = new List<PixelFormat>()
+            { 
+                PixelFormat.yuv410p,
+                PixelFormat.yuv411p,
+                PixelFormat.yuv420p,
+                PixelFormat.yuv422p,
+                PixelFormat.yuv440p,
+                PixelFormat.yuv444p
+            };
+
+            return formats[new Random().Next(0, formats.Count)];*/
+
             var values = (PixelFormat[])Enum.GetValues(typeof(PixelFormat));
             return values[new Random().Next(0, values.Length)];
         }
@@ -60,7 +81,6 @@ namespace Discord_Crash_MP4_Generator
             c.SetOverwriteOutput(true);
             c.SetPixelFormat(randomPixelFormat());
             randomizeScaleAndAspectRatio(c);
-            c.SetVideoBitrate(1000); 
             c.AddParameter($"-ignore_loop 0");
 
             await c.Start();
@@ -107,11 +127,6 @@ namespace Discord_Crash_MP4_Generator
         {
             IConversion bad = await FFmpeg.Conversions.FromSnippet.Split(master, output, start, duration);
             bad.SetOverwriteOutput(true);
-            Random r = new Random();
-
-            bad.SetVideoBitrate(r.Next(1000, 100000));
-            bad.SetAudioBitrate(r.Next(1000, 100000));
-
             bad.SetPixelFormat(randomPixelFormat()); // this does 90% of the crash
             randomizeScaleAndAspectRatio(bad);
 
@@ -183,7 +198,8 @@ namespace Discord_Crash_MP4_Generator
                         { // in some cases conversion will fuck up, so just try again cuz i cba to filter out which cant be converted
                             if (e is ConversionException)
                             {
-                                writeLine(ConsoleColor.Red, "Invalid Conversion occurred. Trying again...", null);
+                                writeLine(ConsoleColor.Red, "Invalid Conversion occurred. Trying again...\n" + e, null);
+                                Thread.Sleep(1000);
                                 goto anotherAttempt;
                             }
                             else
@@ -226,11 +242,12 @@ namespace Discord_Crash_MP4_Generator
 
                 conversion.SetOverwriteOutput(true);
 
+            //    conversion.AddParameter("-y -vsync 0 -hwaccel cuda -hwaccel_output_format cuda -c:v libx265");
                 conversion.AddParameter($"-f concat");
                 conversion.AddParameter($"-safe 0");
                 conversion.AddParameter($"-i \"{sampleCollection}\"");
-                conversion.AddParameter($"-c copy");
-
+                conversion.AddParameter($"-codec copy");
+                
                 writeLine("Building output...");
 
                 return await conversion.SetOutput(output).Start();
