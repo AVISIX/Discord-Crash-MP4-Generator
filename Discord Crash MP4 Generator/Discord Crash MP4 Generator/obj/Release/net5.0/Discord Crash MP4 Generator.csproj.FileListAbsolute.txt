@@ -1,0 +1,4 @@
+C:\Users\Lukas\Documents\GitHub\Discord-Crash-MP4-Generator\Discord Crash MP4 Generator\Discord Crash MP4 Generator\obj\Release\net5.0\Discord Crash MP4 Generator.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Lukas\Documents\GitHub\Discord-Crash-MP4-Generator\Discord Crash MP4 Generator\Discord Crash MP4 Generator\obj\Release\net5.0\Discord Crash MP4 Generator.AssemblyInfoInputs.cache
+C:\Users\Lukas\Documents\GitHub\Discord-Crash-MP4-Generator\Discord Crash MP4 Generator\Discord Crash MP4 Generator\obj\Release\net5.0\Discord Crash MP4 Generator.AssemblyInfo.cs
+C:\Users\Lukas\Documents\GitHub\Discord-Crash-MP4-Generator\Discord Crash MP4 Generator\Discord Crash MP4 Generator\obj\Release\net5.0\Discord Crash MP4 Generator.csproj.CoreCompileInputs.cache

@@ -267,10 +267,14 @@ namespace Discord_Crash_MP4_Generator
 
             FFmpeg.SetExecutablesPath(@"C:\FFmpeg\bin");
 
-#if DEBUG 
-            string filePath = @"C:\Users\Lukas\Desktop\Memes\vid\hot_irl_kitten_nya.mp4";
-            string outputDir = @"C:\Users\Lukas\Desktop\Memes\vid\crashers\lol.mp4";
+            string filePath = "";
+            string outputDir = "";
             double crashTiming = 3;
+
+#if DEBUG 
+            filePath = @"C:\Users\Lukas\Desktop\Memes\vid\hot_irl_kitten_nya.mp4";
+            outputDir = @"C:\Users\Lukas\Desktop\Memes\vid\crashers\lol.mp4";
+            crashTiming = 3;
 #else
 #region Get Filepath 
             {
