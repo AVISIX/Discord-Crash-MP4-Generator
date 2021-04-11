@@ -235,7 +235,7 @@ namespace Discord_Crash_MP4_Generator
                 if (totalLength.TotalSeconds <= 1)
                     throw new Exception("The Video has to be longer than 1 second!");
 
-                if (crashTiming <= 1 || crashTiming > totalLength.TotalSeconds)
+                if (crashTiming < 1 || crashTiming > totalLength.TotalSeconds)
                     throw new Exception("The Crash Timing cannot be before the first second and cannot exceed the total length of the Video!");
 
                 writeLine("Checking for Files...");
@@ -273,12 +273,12 @@ namespace Discord_Crash_MP4_Generator
                         { // in some cases conversion will fuck up, so just try again cuz i cba to filter out which cant be converted
                             if (e is ConversionException)
                             {
-                                writeLine(ConsoleColor.Red, "Invalid Conversion occurred. Trying again...\n" + e, null);
+                                writeLine(ConsoleColor.Red, "Invalid Conversion occurred. Trying again...", null);
                                 Thread.Sleep(1000);
                                 goto anotherAttempt;
                             }
                             else
-                                throw;
+                                writeLine(ConsoleColor.Red, e, null);
                         }
 
                         badParts.Add(samplePath);
