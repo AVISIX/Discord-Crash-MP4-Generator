@@ -10,6 +10,8 @@ You can make it even more consistent by Encoding the Mp4 with NVidia Hardware Ac
 
 This was a one time Project, it might not work after some time anymore. At the time of writing this (9th April 2021), it still works.
 
+Also apparently this ONLY works on people who have Hardware Acceleration Enabled in Discord. 
+
 If you find a new or better way to Crash Discord, please make a Pull Request or Fork the Repository. 
 
 ## Where is the .exe ?!?!?!
