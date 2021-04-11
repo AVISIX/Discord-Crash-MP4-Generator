@@ -25,7 +25,7 @@ namespace Discord_Crash_MP4_Generator
         public static string badSample = Path.GetTempPath() + Guid.NewGuid().ToString();
         public static string sampleCollection = Path.GetTempPath() + Guid.NewGuid().ToString() + ".txt";
 
-        public static int brokenSamples = 5; // 3 seems to be quite alright tbh
+        public static int brokenSamples = 3; // 3 seems to be quite alright tbh
 
         public static string filePathPattern = @"^(?:[a-zA-Z]\:|\\\\[\w\.]+\\[\w.$]+)\\(?:[\w]+\\)*\w([\w.])+$";
 
@@ -83,7 +83,7 @@ namespace Discord_Crash_MP4_Generator
             Console.WriteLine();
         }
 
-        public static async Task<string> Get10k()
+        public static async Task<string> Get10k() // revision this later on. Must make mp4 resize to 10k pixel image
         {
             string path = Path.GetTempPath() + "10k10k10k10k10k10k10k10k10k10k10k10k10k10k10k10k10k10k.mp4";
 
@@ -287,7 +287,7 @@ namespace Discord_Crash_MP4_Generator
                     }
                 }
 
-                badParts.Add(await Get10k());
+     //           badParts.Add(await Get10k());
 
                 #endregion
 
