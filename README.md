@@ -19,4 +19,4 @@ Its in the Bin Folder. If you go to "Discord-Crash-MP4-Generator\Discord Crash M
 ## IT DOESNT WORK 
 
 See what it says in the Console. Most likely you are missing FFmpeg, which you must download at "https://ffmpeg.org/download.html".
-As soon as you got it you must place the Binaries into the Directory "C:\FFmpeg\bin". Otherwise the C# Wrapper wont detect it.
+As soon as you got it you must place the Binaries(.exe files) into the Directory "C:\FFmpeg\bin\". Otherwise the C# Wrapper wont detect it.
