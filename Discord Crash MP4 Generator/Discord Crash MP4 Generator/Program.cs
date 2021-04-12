@@ -21,6 +21,7 @@ namespace Discord_Crash_MP4_Generator
 
     class Program
     {
+        #region Attributes
         public static string goodSample = Path.GetTempPath() + Guid.NewGuid().ToString() + ".mp4";
         public static string badSample = Path.GetTempPath() + Guid.NewGuid().ToString();
         public static string sampleCollection = Path.GetTempPath() + Guid.NewGuid().ToString() + ".txt";
@@ -28,7 +29,11 @@ namespace Discord_Crash_MP4_Generator
         public static int brokenSamples = 3; // 3 seems to be quite alright tbh
 
         public static string filePathPattern = @"^(?:[a-zA-Z]\:|\\\\[\w\.]+\\[\w.$]+)\\(?:[\w]+\\)*\w([\w.])+$";
+        #endregion
 
+
+
+        #region Utils
         public static void write(params object[] objects)
         {
             foreach (var o in objects)
@@ -44,35 +49,6 @@ namespace Discord_Crash_MP4_Generator
                     throw new InvalidInputException("The Object " + o.GetType().ToString() + " does not have a ToString function.");
         }
 
-        private static PixelFormat last = PixelFormat.yuv420p;
-        public static PixelFormat randomPixelFormat()
-        {
-            /*
-            if(last == PixelFormat.yuv420p)
-            {
-                last = PixelFormat.yuv444p;
-                return PixelFormat.yuv444p;
-            }
-
-
-            last = PixelFormat.yuv420p;
-            return PixelFormat.yuv420p;*/
-            var values = (PixelFormat[])Enum.GetValues(typeof(PixelFormat));
-            return values[new Random().Next(0, values.Length)];
-        }
-
-        public static VideoSize randomVideoSize()
-        {
-            var values = (VideoSize[])Enum.GetValues(typeof(VideoSize));
-            return values[new Random().Next(0, values.Length)];
-        }
-
-        public static VideoCodec randomCodec()
-        {
-            var values = (VideoCodec[])Enum.GetValues(typeof(VideoCodec));
-            return values[new Random().Next(0, values.Length)];
-        }
-
         public static void writeLine(params object[] oo)
         {
             if (oo == null)
@@ -82,6 +58,10 @@ namespace Discord_Crash_MP4_Generator
 
             Console.WriteLine();
         }
+        #endregion
+
+
+
 
         public static async Task<string> Get10k() // revision this later on. Must make mp4 resize to 10k pixel image
         {
@@ -96,67 +76,20 @@ namespace Discord_Crash_MP4_Generator
             return path;
         }
 
-        [Obsolete("This never did anything anyways")]
-        public static async Task<IConversionResult> gifBreaker(string path)
+        private static int randomMod(int start, int end)
         {
-            string temp = Path.GetTempPath() + Guid.NewGuid().ToString() + ".gif";
-
-            IConversion c = await FFmpeg.Conversions.FromSnippet.ToGif(path, temp, 0);
-            c.SetOverwriteOutput(true);
-            c.SetPixelFormat(randomPixelFormat());
-            randomizeScaleAndAspectRatio(c);
-            c.AddParameter($"-ignore_loop 0");
-
-            await c.Start();
-
-            IConversion c2 = await FFmpeg.Conversions.FromSnippet.ToMp4(temp, path);
-            c2.SetOverwriteOutput(true);
-            return await c2.Start();
-        }
-
-        [Obsolete("didnt finish this")]
-        public static async Task<IConversionResult> tsTest(string path)
-        {
-            string temp = Path.GetTempPath() + Guid.NewGuid().ToString() + ".ts";
-
-            IConversion c = await FFmpeg.Conversions.FromSnippet.ToTs(path, temp);
-            c.SetOverwriteOutput(true);
-            await c.Start();
-
-            IConversion c2 = await FFmpeg.Conversions.FromSnippet.ToMp4(temp, path);
-            c2.SetOverwriteOutput(true);
-            return await c2.Start();
-        }
-
-        [Obsolete("does 0")]
-        public static async Task<IConversionResult> webmBreaker(string path)
-        {
-            string temp = Path.GetTempPath() + Guid.NewGuid().ToString() + ".webm";
-
-            IConversion c = await FFmpeg.Conversions.FromSnippet.ToWebM(path, temp);
-            c.SetOverwriteOutput(true);
-            // c.SetPixelFormat(randomPixelFormat());
-            //  randomizeScaleAndAspectRatio(c);
-            c.AddParameter("-vf scale=10000:10000");
-            await c.Start();
-
-            IConversion c2 = await FFmpeg.Conversions.FromSnippet.ToMp4(temp, path);
-            c2.SetOverwriteOutput(true);
-            return await c2.Start();
+            int r = 0;
+            while (r % 2 != 0)
+                r = new Random().Next(start, end);
+            return r;
         }
 
         public static void randomizeScaleAndAspectRatio(IConversion some)
         {
+            int x = randomMod(100, 1000);
+            int y = randomMod(100, 1000);
+
             Random r = new Random();
-
-            int x = 0;
-            while (x % 2 != 0)
-                x = r.Next(100, 1000);
-
-            int y = 0;
-            while (y % 2 != 0)
-                y = r.Next(100, 1000);
-
             string aspectRatio = r.Next(1, 20) + ":" + r.Next(1, 20);
 
             some.AddParameter("-vf scale=" + x + ":" + y + ",setdar=" + aspectRatio); // this is just an extra, didnt seem to work in discord ... 
@@ -445,5 +378,88 @@ namespace Discord_Crash_MP4_Generator
         static void Main(string[] args) => execute().GetAwaiter().GetResult();
 
         ~Program() => Cleanup();
+
+
+
+        #region Deprecated 
+        private static PixelFormat last = PixelFormat.yuv420p;
+        public static PixelFormat randomPixelFormat()
+        {
+            /*
+            if(last == PixelFormat.yuv420p)
+            {
+                last = PixelFormat.yuv444p;
+                return PixelFormat.yuv444p;
+            }
+
+
+            last = PixelFormat.yuv420p;
+            return PixelFormat.yuv420p;*/
+            var values = (PixelFormat[])Enum.GetValues(typeof(PixelFormat));
+            return values[new Random().Next(0, values.Length)];
+        }
+
+        public static VideoSize randomVideoSize()
+        {
+            var values = (VideoSize[])Enum.GetValues(typeof(VideoSize));
+            return values[new Random().Next(0, values.Length)];
+        }
+
+        public static VideoCodec randomCodec()
+        {
+            var values = (VideoCodec[])Enum.GetValues(typeof(VideoCodec));
+            return values[new Random().Next(0, values.Length)];
+        }
+
+
+        [Obsolete("This never did anything anyways")]
+        public static async Task<IConversionResult> gifBreaker(string path)
+        {
+            string temp = Path.GetTempPath() + Guid.NewGuid().ToString() + ".gif";
+
+            IConversion c = await FFmpeg.Conversions.FromSnippet.ToGif(path, temp, 0);
+            c.SetOverwriteOutput(true);
+            c.SetPixelFormat(randomPixelFormat());
+            randomizeScaleAndAspectRatio(c);
+            c.AddParameter($"-ignore_loop 0");
+
+            await c.Start();
+
+            IConversion c2 = await FFmpeg.Conversions.FromSnippet.ToMp4(temp, path);
+            c2.SetOverwriteOutput(true);
+            return await c2.Start();
+        }
+
+        [Obsolete("didnt finish this")]
+        public static async Task<IConversionResult> tsTest(string path)
+        {
+            string temp = Path.GetTempPath() + Guid.NewGuid().ToString() + ".ts";
+
+            IConversion c = await FFmpeg.Conversions.FromSnippet.ToTs(path, temp);
+            c.SetOverwriteOutput(true);
+            await c.Start();
+
+            IConversion c2 = await FFmpeg.Conversions.FromSnippet.ToMp4(temp, path);
+            c2.SetOverwriteOutput(true);
+            return await c2.Start();
+        }
+
+        [Obsolete("does 0")]
+        public static async Task<IConversionResult> webmBreaker(string path)
+        {
+            string temp = Path.GetTempPath() + Guid.NewGuid().ToString() + ".webm";
+
+            IConversion c = await FFmpeg.Conversions.FromSnippet.ToWebM(path, temp);
+            c.SetOverwriteOutput(true);
+            // c.SetPixelFormat(randomPixelFormat());
+            //  randomizeScaleAndAspectRatio(c);
+            c.AddParameter("-vf scale=10000:10000");
+            await c.Start();
+
+            IConversion c2 = await FFmpeg.Conversions.FromSnippet.ToMp4(temp, path);
+            c2.SetOverwriteOutput(true);
+            return await c2.Start();
+        }
+        #endregion
     }
 }
