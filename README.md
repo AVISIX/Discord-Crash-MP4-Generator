@@ -10,7 +10,7 @@ This was a one time Project, it might not work after some time anymore. At the t
 
 Also apparently this ONLY works on people who have Hardware Acceleration Enabled in Discord. 
 
-If you find a new or better way to Crash Discord, please make a Pull Request or Fork the Repository. 
+If you find a new or better way to Crash Discord, please make a Pull Request, Fork the Repository or open a new Issue so I can look into it, thanks. 
 
 ## Where is the .exe ?!?!?!
 
